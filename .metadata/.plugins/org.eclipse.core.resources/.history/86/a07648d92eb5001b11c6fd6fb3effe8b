@@ -1,0 +1,76 @@
+package af;
+
+import java.awt.Rectangle;
+
+/* Swingå…¥é—¨ç¯‡ 10.3èŠ‚ */
+
+// å›¾ç‰‡ç¼©æ”¾è®¡ç®—
+public class AfImageScaler
+{
+	// è¾“å…¥å�‚æ•°
+	private int imgW,imgH; // å›¾ç‰‡çš„å®½åº¦ã€�é«˜åº¦
+	private Rectangle rect; // è¦�ç»˜åˆ¶çš„ç›®æ ‡åŒºåŸŸ
+	
+	// imgW, imgH, å›¾ç‰‡çš„å®½åº¦/é«˜åº¦
+	// rect: ç›®æ ‡åŒºåŸŸ
+	public AfImageScaler(int imgW, int imgH, Rectangle rect)
+	{
+		this.imgW = imgW;
+		this.imgH = imgH;
+		this.rect = rect;	
+	}
+	public AfImageScaler(int imgW, int imgH, int dstW, int dstH)
+	{
+		this(imgW, imgH, new Rectangle(dstW, dstH));	
+	}
+	
+	// æ‹‰ä¼¸æ˜¾ç¤º,å� æ»¡ç©ºé—´ï¼ˆæ¯”ä¾‹å�¯èƒ½å¤±è°ƒï¼‰
+	public Rectangle fitXY()
+	{		
+		return this.rect;
+	}
+	
+	// å±…ä¸­æ˜¾ç¤ºï¼Œä¿�æŒ�é•¿å®½æ¯”ï¼Œä¸”é€‚å�ˆç›®æ ‡çŸ©å½¢
+	public Rectangle fitCenter()
+	{
+		int width = rect.width;
+		int height = rect.height;
+		
+		int fitW = width;
+		int fitH = width * imgH / imgW;
+		if( fitH > height )
+		{
+			fitH = height;
+			fitW = height * imgW / imgH;
+		}
+		int x = (width - fitW ) /2;
+		int y = (height - fitH ) /2;
+		
+		// ç»“æžœ
+		return new Rectangle(rect.x + x, rect.y + y, fitW, fitH);
+	}
+	
+	// å¦‚æžœå›¾ç‰‡å°�äºŽç›®æ ‡çŸ©å½¢ï¼Œåˆ™ç›´æŽ¥å±…ä¸­æ˜¾ç¤º
+	// å¦‚æžœå›¾ç‰‡å¤§äºŽç›®æ ‡çŸ©å½¢ï¼Œåˆ™æŒ‰fitCenter()ç¼©æ”¾å�Žæ˜¾ç¤º
+	public Rectangle fitCenterInside()
+	{
+		int width = rect.width;
+		int height = rect.height;
+		int fitW, fitH;
+		
+		if(imgW <= width && imgH <= height)
+		{
+			fitW = imgW;
+			fitH = imgH;
+			
+			int x = (width - fitW ) /2;
+			int y = (height - fitH ) /2;
+			return new Rectangle(rect.x + x, rect.y + y, fitW, fitH);
+		}
+		else
+		{
+			return fitCenter();
+		}
+	}
+	
+}
